@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "_examples.html" import difficulty_section %}
+{% block title %}Σχέδια Ταπισερί από Φωτογραφία{% endblock %}
+{% block content %}
+
+<header>
+  <h1>🧵 <span class="brand-script">Σχέδια Ταπισερί από Φωτογραφία</h1>
+  <p class="subtitle">Μετατρέψτε τις φωτογραφίες σας σε έτοιμα σχέδια για κέντημα ταπισερί, βήμα βήμα, εύκολα</p>
+</header>
+
+
+<p class="hint center">Παραδείγματα ανά επίπεδο δυσκολίας — από απλά σχέδια έως πολύ λεπτομερή:</p>
+
+{{ difficulty_section("🟢 Εύκολο", "badge-easy", examples_by_difficulty.easy) }}
+{{ difficulty_section("🟡 Μέτριο", "badge-medium", examples_by_difficulty.medium) }}
+{{ difficulty_section("🔴 Δύσκολο", "badge-hard", examples_by_difficulty.hard) }}
+
+<div class="landing-cta">
+  <h2>Ξεκινήστε το δικό σας έργο</h2>
+  <p class="hint">Δημιουργήστε λογαριασμό για να ανεβάσετε τις δικές σας φωτογραφίες και να φτιάξετε το δικό σας σχέδιο ταπισερί.</p>
+  <div class="button-row center-row">
+    <a href="{{ url_for('register') }}" class="btn btn-primary">✅ Εγγραφή</a>
+    <a href="{{ url_for('login') }}" class="btn btn-secondary">🔑 Σύνδεση</a>
+  </div>
+</div>
+{% endblock %}

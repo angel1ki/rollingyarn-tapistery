@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "_avatar.html" import avatar %}
+{% block title %}{{ profile_user.username }}{% endblock %}
+{% block content %}
+<header class="profile-header">
+  {{ avatar(profile_user, "avatar avatar-large") }}
+  <h1>{{ profile_user.username }}</h1>
+  <p class="subtitle">{{ followers_count }} ακόλουθοι &middot; {{ following_count }} ακολουθεί</p>
+
+  {% if is_own %}
+  <form method="post" action="{{ url_for('update_avatar') }}" enctype="multipart/form-data" class="avatar-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="step-label" for="avatarInput">Αλλαγή φωτογραφίας προφίλ</label>
+    <input type="file" id="avatarInput" name="avatar" accept="image/*" class="file-input">
+    <button type="submit" class="btn btn-primary">📷 Ενημέρωση Φωτογραφίας</button>
+  </form>
+  {% elif is_following %}
+  <form method="post" action="{{ url_for('unfollow_user', username=profile_user.username) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-secondary">✔️ Ακολουθείτε — Κατάργηση</button>
+  </form>
+  {% else %}
+  <form method="post" action="{{ url_for('follow_user', username=profile_user.username) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-primary">➕ Ακολούθηση</button>
+  </form>
+  {% endif %}
+</header>
+
+<h2>{% if is_own %}Τα Έργα μου{% else %}Έργα του/της {{ profile_user.username }}{% endif %}</h2>
+{% if artworks %}
+<div class="gallery">
+  {% for art in artworks %}
+  <a href="{{ url_for('view_artwork', artwork_id=art.id) }}" class="gallery-card">
+    <img src="{{ url_for('static', filename=art.preview_path) }}" alt="{{ art.title }}">
+    <p class="gallery-title">{{ art.title }}</p>
+    <p class="gallery-meta">{{ art.grid_w }} x {{ art.grid_h }} θηλιές</p>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p class="hint">Δεν υπάρχουν ακόμα αποθηκευμένα έργα.</p>
+{% endif %}
+{% endblock %}

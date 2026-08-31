@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.pyc
+instance/
+static/uploads/
+static/avatars/
+.env
+
+# PyCon submission material and other scratch/personal files — unrelated to the app
+submission/
+IMG_1716.jpg
+x-mas-tapestry.jpg
+tapestry_art.py
+sunset_artwork.png
+sunset_chart.png
+sunset_legend.txt

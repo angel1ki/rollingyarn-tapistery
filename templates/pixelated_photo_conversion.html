@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Νέο Έργο Ταπισερί - Pixelated Φωτογραφία{% endblock %}
+{% block content %}
+<header>
+  <h1>🧵 Σχέδια Ταπισερί από Pixelated Φωτογραφία</h1>
+  <p class="subtitle">Ανεβάστε μια ήδη pixelated φωτογραφία και φτιάξτε ένα καθαρό σχέδιο για κέντημα ταπισερί, χωρίς άσχημες άκρες από διπλό pixelation</p>
+</header>
+
+<form id="uploadFormPixelated">
+  <div class="step">
+    <label for="photoPixelated" class="step-label">Βήμα 1: Επιλέξτε pixelated φωτογραφία</label>
+    <input type="file" id="photoPixelated" name="photo" accept="image/*" capture="environment" class="file-input" required>
+  </div>
+
+  <div class="step">
+    <label for="gridWPixelated" class="step-label">Βήμα 2: Μέγεθος πλέγματος — <span id="gridWPixelatedVal">80</span> θηλιές</label>
+    <input type="range" id="gridWPixelated" min="20" max="1000" value="80" step="10" class="slider">
+    <p class="hint">Η φωτογραφία επαναδειγματοληπτείται καθαρά στο ακριβές μέγεθος πλέγματος, όποιο κι αν είναι το αρχικό μέγεθος pixel της</p>
+  </div>
+
+  <div class="step">
+    <label for="numColorsPixelated" class="step-label">Βήμα 3: Αριθμός χρωμάτων — <span id="numColorsPixelatedVal">12</span></label>
+    <input type="range" id="numColorsPixelated" min="2" max="160" value="12" step="2" class="slider">
+    <p class="hint">Λιγότερα χρώματα σημαίνει πιο απλό σχέδιο</p>
+  </div>
+
+  <div class="step">
+    <label class="checkbox-label">
+      <input type="checkbox" id="showSymbols" checked>
+      Εμφάνιση αριθμών σε κάθε τετράγωνο (βοηθάει στην ασπρόμαυρη εκτύπωση)
+    </label>
+    <p class="hint">Πάνω από 200 θηλιές, οι αριθμοί απενεργοποιούνται αυτόματα (θα ήταν πολύ μικροί για να διαβαστούν) και μένει μόνο η λεπτομερής εικόνα</p>
+  </div>
+  <button type="submit" class="btn btn-primary btn-full" id="generateBtnPixelated">✅ Δημιουργία Σχεδίου</button>
+</form>
+
+
+<p id="loadingPixelated" class="loading hidden">⏳ Γίνεται δημιουργία του σχεδίου, παρακαλώ περιμένετε...</p>
+<p id="errorBoxPixelated" class="error hidden"></p>
+
+<section id="resultsPixelated" class="results hidden">
+  <h2>Προεπισκόπηση Εικόνας</h2>
+  <img id="previewImgPixelated" class="result-image" alt="Προεπισκόπηση εικόνας σε pixel">
+  <div class="button-row">
+    <a id="downloadPreviewPixelated" class="btn btn-secondary" download="pixel-eikona.png">⬇️ Λήψη Εικόνας</a>
+  </div>
+
+  <h2>Σχέδιο για Ταπισερί</h2>
+  <p class="hint">Μέγεθος πλέγματος: <span id="dimTextPixelated"></span> θηλιές</p>
+  <p id="symbolsDisabledNotePixelated" class="hint hidden">Οι αριθμοί απενεργοποιήθηκαν αυτόματα επειδή το πλέγμα είναι πολύ μεγάλο για ευανάγνωστους αριθμούς.</p>
+  <div class="pattern-scroll">
+    <img id="patternImgPixelated" class="result-image" alt="Σχέδιο ταπισερί με πλέγμα">
+  </div>
+  <div class="button-row">
+    <a id="downloadPatternPixelated" class="btn btn-secondary" download="sxedio-tapiseri.png">⬇️ Λήψη Σχεδίου</a>
+    <button type="button" class="btn btn-primary" id="printBtnPixelated">🖨️ Εκτύπωση Σχεδίου</button>
+  </div>
+
+  <h2>Λίστα Χρωμάτων</h2>
+  <table id="legendTablePixelated" class="legend-table">
+    <thead>
+      <tr><th>Χρώμα</th><th>Κωδικός</th><th>Πλήθος θηλιών</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Αποθήκευση Έργου</h2>
+  <div class="step">
+    <label for="artTitlePixelated" class="step-label">Τίτλος έργου</label>
+    <input type="text" id="artTitlePixelated" class="text-input" placeholder="π.χ. Το σκυλί μου" maxlength="120">
+    <div class="button-row">
+      <button type="button" class="btn btn-primary" id="saveBtnPixelated">💾 Αποθήκευση στα Έργα μου</button>
+    </div>
+    <p id="saveMsgPixelated" class="hint"></p>
+  </div>
+</section>
+
+<div id="printAreaPixelated" class="print-only">
+  <h1>Σχέδιο Ταπισερί</h1>
+  <img id="printPatternImgPixelated" alt="Σχέδιο ταπισερί">
+  <table id="printLegendTablePixelated" class="legend-table"></table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='app_pixelated.js') }}"></script>
+{% endblock %}

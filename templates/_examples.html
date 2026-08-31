@@ -1,0 +1,14 @@
+{% macro difficulty_section(title, badge_class, examples) %}
+{% if examples %}
+<h2>{{ title }}</h2>
+<div class="gallery">
+  {% for example in examples %}
+  <a href="{{ url_for('static', filename=example.pattern) }}" target="_blank" class="gallery-card">
+    <img src="{{ url_for('static', filename=example.preview) }}" alt="Παράδειγμα σχεδίου ταπισερί: {{ example.title }}">
+    <p class="gallery-title">{{ example.title }}</p>
+    <span class="difficulty-badge {{ badge_class }}">{{ title }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
