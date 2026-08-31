@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Τα Έργα μου{% endblock %}
+{% block content %}
+<header>
+  <h1>🖼️ Τα Έργα μου</h1>
+  <p class="subtitle">Όλα τα σχέδια ταπισερί που έχετε δημιουργήσει</p>
+</header>
+
+{% if artworks %}
+<div class="gallery">
+  {% for art in artworks %}
+  <div class="gallery-card">
+    <a href="{{ url_for('view_artwork', artwork_id=art.id) }}">
+      <img src="{{ url_for('static', filename=art.preview_path) }}" alt="{{ art.title }}">
+      <p class="gallery-title">{{ art.title }}</p>
+      <p class="gallery-meta">{{ art.grid_w }} x {{ art.grid_h }} θηλιές</p>
+    </a>
+    <form method="post" action="{{ url_for('delete_artwork', artwork_id=art.id) }}"
+          data-confirm="Σίγουρα θέλετε να διαγράψετε το έργο «{{ art.title }}»;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-danger btn-full gallery-delete-btn">🗑️ Διαγραφή</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="hint">Δεν έχετε αποθηκεύσει ακόμα κανένα έργο. <a href="{{ url_for('create') }}">Δημιουργήστε το πρώτο σας!</a></p>
+{% endif %}
+{% endblock %}

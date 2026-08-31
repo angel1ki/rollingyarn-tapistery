@@ -1,0 +1,7 @@
+{% macro avatar(user, css_class="avatar") %}
+  {% if user.avatar_path %}
+    <img src="{{ url_for('static', filename=user.avatar_path) }}" class="{{ css_class }}" alt="Φωτογραφία προφίλ του {{ user.username }}">
+  {% else %}
+    <span class="{{ css_class }} avatar-placeholder"><span class="letter">{{ user.username[0]|upper }}</span></span>
+  {% endif %}
+{% endmacro %}

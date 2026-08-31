@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ artwork.title }}{% endblock %}
+{% block content %}
+<header>
+  <h1>{{ artwork.title }}</h1>
+  <p class="subtitle">{{ artwork.grid_w }} x {{ artwork.grid_h }} θηλιές</p>
+  {% if not is_owner %}
+  <p class="subtitle">από <a href="{{ url_for('public_profile', username=artwork.owner.username) }}">{{ artwork.owner.username }}</a></p>
+  {% endif %}
+</header>
+
+<div class="pattern-scroll">
+  <img src="{{ url_for('static', filename=artwork.pattern_path) }}" class="result-image" alt="Σχέδιο ταπισερί">
+</div>
+
+<div class="button-row">
+  <a href="{{ url_for('static', filename=artwork.pattern_path) }}" download class="btn btn-secondary">⬇️ Λήψη Σχεδίου</a>
+  <button type="button" class="btn btn-primary" data-action="print">🖨️ Εκτύπωση</button>
+  {% if is_owner %}
+  <form method="post" action="{{ url_for('delete_artwork', artwork_id=artwork.id) }}"
+        data-confirm="Σίγουρα θέλετε να διαγράψετε αυτό το έργο;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-danger">🗑️ Διαγραφή</button>
+  </form>
+  {% endif %}
+</div>
+
+<h2>Λίστα Χρωμάτων</h2>
+<table class="legend-table">
+  <thead><tr><th>Αρ.</th><th>Χρώμα</th><th>Κωδικός</th><th>Πλήθος θηλιών</th></tr></thead>
+  <tbody>
+    {% for item in legend %}
+    <tr>
+      <td>{{ item.symbol }}</td>
+      <td><span class="swatch" style="background:{{ item.hex }}"></span></td>
+      <td>{{ item.hex }}</td>
+      <td>{{ item.count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="print-only">
+  <h1>{{ artwork.title }}</h1>
+  {% if not is_owner %}
+  <p class="subtitle">από {{ artwork.owner.username }}</p>
+  {% endif %}
+  <img src="{{ url_for('static', filename=artwork.pattern_path) }}" alt="Σχέδιο ταπισερί">
+  <table class="legend-table">
+    <thead><tr><th>Αρ.</th><th>Χρώμα</th><th>Κωδικός</th><th>Πλήθος θηλιών</th></tr></thead>
+    <tbody>
+      {% for item in legend %}
+      <tr>
+        <td>{{ item.symbol }}</td>
+        <td><span class="swatch" style="background:{{ item.hex }}"></span></td>
+        <td>{{ item.hex }}</td>
+        <td>{{ item.count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

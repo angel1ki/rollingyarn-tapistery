@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+instance/
+static/uploads/
+static/avatars/
+.env
+
+# working notes for the PyCon submission (contains personal email)
+submission/FORM_ANSWERS.md

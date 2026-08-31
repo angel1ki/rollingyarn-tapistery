@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Νέο Έργο Ταπισερί{% endblock %}
+{% block content %}
+<header>
+  <h1>🧵 Σχέδια Ταπισερί από Φωτογραφία</h1>
+  <p class="subtitle">Ανεβάστε μια φωτογραφία και φτιάξτε ένα έτοιμο σχέδιο για κέντημα ταπισερί</p>
+</header>
+
+<form id="uploadForm">
+  <div class="step">
+    <label for="photo" class="step-label">Βήμα 1: Επιλέξτε φωτογραφία</label>
+    <input type="file" id="photo" name="photo" accept="image/*" capture="environment" class="file-input" required>
+  </div>
+
+  <div class="step">
+    <label for="gridW" class="step-label">Βήμα 2: Μέγεθος πλέγματος — <span id="gridWVal">200</span> θηλιές</label>
+    <input type="range" id="gridW" min="20" max="1000" value="200" step="10" class="slider">
+    <p class="hint">Μεγαλύτερος αριθμός σημαίνει πιο λεπτομερές σχέδιο — ανεβάστε πολύ ψηλά (500+) για να ξεχωρίζουν ακόμα και τα πιο μικρά περιγράμματα της φωτογραφίας</p>
+  </div>
+
+  <div class="step">
+    <label for="numColors" class="step-label">Βήμα 3: Αριθμός χρωμάτων — <span id="numColorsVal">40</span></label>
+    <input type="range" id="numColors" min="2" max="160" value="40" step="4" class="slider">
+    <p class="hint">Λιγότερα χρώματα σημαίνει πιο απλό σχέδιο — περισσότερα χρώματα βοηθούν σε φωτογραφίες προσώπων</p>
+  </div>
+
+  <div class="step">
+    <label class="checkbox-label">
+      <input type="checkbox" id="showSymbols" checked>
+      Εμφάνιση αριθμών σε κάθε τετράγωνο (βοηθάει στην ασπρόμαυρη εκτύπωση)
+    </label>
+    <p class="hint">Πάνω από 200 θηλιές, οι αριθμοί απενεργοποιούνται αυτόματα (θα ήταν πολύ μικροί για να διαβαστούν) και μένει μόνο η λεπτομερής εικόνα</p>
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-full" id="generateBtn">✅ Δημιουργία Σχεδίου</button>
+</form>
+
+<p id="loading" class="loading hidden">⏳ Γίνεται δημιουργία του σχεδίου, παρακαλώ περιμένετε...</p>
+<p id="errorBox" class="error hidden"></p>
+
+<section id="results" class="results hidden">
+  <h2>Προεπισκόπηση Εικόνας</h2>
+  <img id="previewImg" class="result-image" alt="Προεπισκόπηση εικόνας σε pixel">
+  <div class="button-row">
+    <a id="downloadPreview" class="btn btn-secondary" download="pixel-eikona.png">⬇️ Λήψη Εικόνας</a>
+  </div>
+
+  <h2>Σχέδιο για Ταπισερί</h2>
+  <p class="hint">Μέγεθος πλέγματος: <span id="dimText"></span> θηλιές</p>
+  <p id="symbolsDisabledNote" class="hint hidden">Οι αριθμοί απενεργοποιήθηκαν αυτόματα επειδή το πλέγμα είναι πολύ μεγάλο για ευανάγνωστους αριθμούς.</p>
+  <div class="pattern-scroll">
+    <img id="patternImg" class="result-image" alt="Σχέδιο ταπισερί με πλέγμα και αριθμούς">
+  </div>
+  <div class="button-row">
+    <a id="downloadPattern" class="btn btn-secondary" download="sxedio-tapiseri.png">⬇️ Λήψη Σχεδίου</a>
+    <button type="button" class="btn btn-primary" id="printBtn">🖨️ Εκτύπωση Σχεδίου</button>
+  </div>
+
+  <h2>Λίστα Χρωμάτων</h2>
+  <table id="legendTable" class="legend-table">
+    <thead>
+      <tr><th>Αρ.</th><th>Χρώμα</th><th>Κωδικός</th><th>Πλήθος θηλιών</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Αποθήκευση Έργου</h2>
+  <div class="step">
+    <label for="artTitle" class="step-label">Τίτλος έργου</label>
+    <input type="text" id="artTitle" class="text-input" placeholder="π.χ. Το σκυλί μου" maxlength="120">
+    <div class="button-row">
+      <button type="button" class="btn btn-primary" id="saveBtn">💾 Αποθήκευση στα Έργα μου</button>
+    </div>
+    <p id="saveMsg" class="hint"></p>
+  </div>
+</section>
+
+<div id="printArea" class="print-only">
+  <h1>Σχέδιο Ταπισερί</h1>
+  <img id="printPatternImg" alt="Σχέδιο ταπισερί">
+  <table id="printLegendTable" class="legend-table"></table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}
